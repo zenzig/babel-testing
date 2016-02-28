@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" ng-app="olympics">
+<html lang="en" ng-app="olympics" ng-controller="mainController as main">
 <head>
   <meta charset="UTF-8">
   <title>Olympic Games</title>
@@ -12,9 +12,8 @@
   </div>
   
   <ul ng-controller="sportsController as sportsCtrl" >
-    <li ng-repeat="sport in sportsCtrl.sports">{{ sport }}</li>
+    <li ng-repeat="sport in sportsCtrl.sports">{{ sport.name }}</li>
   </ul>
-
 
     <script src="client/dist/bundle.js"></script>
   </body>

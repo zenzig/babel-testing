@@ -1,8 +1,8 @@
 var bodyParser = require('body-parser');    // get body-parser
 var User       = require('../models/user');
+var Sport       = require('../models/sport');
 var jwt        = require('jsonwebtoken');
 var config     = require('../../config');
-
 // super secret for creating tokens
 var superSecret = config.secret;
 
@@ -52,7 +52,7 @@ module.exports = function(app, express) {
 
 		});
 	});
-
+/*	
 	// route middleware to verify a token
 	apiRouter.use(function(req, res, next) {
 		// do logging
@@ -85,7 +85,7 @@ module.exports = function(app, express) {
 			
 		}
 	});
-
+*/
 
 	// test route to make sure everything is working : GET --> http://localhost:3000/api
 	apiRouter.get('/', function(req, res) {
@@ -98,6 +98,7 @@ module.exports = function(app, express) {
 
 		// create a user : POST --> http://localhost:3000/users
 		.post(function(req, res) {
+			console.log(req.body);
 			
 			var user = new User();		// create a new instance of the User model
 			user.name = req.body.name;  // set the users name (comes from the request)
@@ -169,6 +170,67 @@ module.exports = function(app, express) {
 		.delete(function(req, res) {
 			User.remove({
 				_id: req.params.user_id
+			}, function(err, user) {
+				if (err) res.send(err);
+				res.json({ message: 'Successfully deleted' });
+			});
+		});
+		
+	////////////////////////////////////////////////////////////////////////////	
+	// on routes that end in /sports
+	// ----------------------------------------------------
+	apiRouter.route('/sports')
+
+		// create a user : POST --> http://localhost:3000/users
+		.post(function(req, res) {
+			
+			var sport = new Sport();		// create a new instance of the User model
+			sport.name = req.body.name;  // set the users name (comes from the request)
+			sport.save(function(err) {
+				if (err) {
+					// duplicate entry
+					if (err.code == 11000) 
+						return res.json({ success: false, message: 'A sport with that name already exists. '});
+					else 
+						return res.send(err);
+				}
+
+				// return a message
+				res.json({ message: 'Sport created!' });
+			});
+
+		})
+
+		.get(function(req, res) {
+			Sport.find({}, function(err, sports) {
+				if (err) res.send(err);
+				// return the users
+				res.json(sports);
+			});
+		});
+
+	// on routes that end in /sports/:sport_id
+	// ----------------------------------------------------
+	apiRouter.route('/sports/:sport_id')
+		.get(function(req, res) {
+			Sport.findById(req.params.sport_id, function(err, sport) {
+				if (err) res.send(err);
+				res.json(sport);
+			});
+		})
+		.put(function(req, res) {
+			Sport.findById(req.params.sport_id, function(err, sport) {
+				if (err) res.send(err);
+				if (req.body.sport.name) sport.name = req.body.sport.name;
+				sport.save(function(err) {
+					if (err) res.send(err);
+					res.json({ message: 'Sport updated!' });
+				});
+			});
+		})
+		.delete(function(req, res) {
+			Sport.remove({
+				_id: req.params.sport_id
 			}, function(err, user) {
 				if (err) res.send(err);
 				res.json({ message: 'Successfully deleted' });
