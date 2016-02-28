@@ -1,6 +1,20 @@
 import angular from 'angular';
+import 'angular-ui-router';
 
-angular.module('olympics',[])
+angular.module('olympics',[
+    'ui.router'
+    ])
+
+.config(($stateProvider, $urlRouterProvider) => {
+    $urlRouterProvider.otherwise('/sports');
+    
+    $stateProvider
+    .state('sports ', {
+    url: '/sports',
+    templateUrl: 'client/sports/sports-nav.html',
+    });
+})
+
 
 .config(function($httpProvider) {
 	$httpProvider.interceptors.push('AuthInterceptor');
