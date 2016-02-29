@@ -1,8 +1,7 @@
-  <ul ng-controller="sportsController as sportsCtrl" >
+  <ul>
     <li ng-repeat="sport in sportsCtrl.sports">
-        <a ui-sref="sports.medals">{{ sport.name }}</a>
+        <a ui-sref="sports.medals({sportName: sport })">{{ sport.name }}</a>
 
     </li>
       <div ui-view></div>
   </ul>
-  
