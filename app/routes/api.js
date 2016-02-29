@@ -180,10 +180,7 @@ module.exports = function(app, express) {
 	// on routes that end in /sports
 	// ----------------------------------------------------
 	apiRouter.route('/sports')
-
-		// create a user : POST --> http://localhost:3000/users
 		.post(function(req, res) {
-			
 			var sport = new Sport();		// create a new instance of the User model
 			sport.name = req.body.name;  // set the users name (comes from the request)
 			sport.save(function(err) {
@@ -194,11 +191,8 @@ module.exports = function(app, express) {
 					else 
 						return res.send(err);
 				}
-
-				// return a message
 				res.json({ message: 'Sport created!' });
 			});
-
 		})
 
 		.get(function(req, res) {
@@ -208,20 +202,21 @@ module.exports = function(app, express) {
 				res.json(sports);
 			});
 		});
-
+/*
 	// on routes that end in /sports/:sport_id
 	// ----------------------------------------------------
 	apiRouter.route('/sports/:sport_id')
 		.get(function(req, res) {
 			Sport.findById(req.params.sport_id, function(err, sport) {
 				if (err) res.send(err);
+				console.log(sport);
 				res.json(sport);
 			});
 		})
 		.put(function(req, res) {
 			Sport.findById(req.params.sport_id, function(err, sport) {
 				if (err) res.send(err);
-				if (req.body.sport.name) sport.name = req.body.sport.name;
+				if (req.body.name) sport.name = req.body.name;
 				sport.save(function(err) {
 					if (err) res.send(err);
 					res.json({ message: 'Sport updated!' });
@@ -236,6 +231,32 @@ module.exports = function(app, express) {
 				res.json({ message: 'Successfully deleted' });
 			});
 		});
+*/		
+////////////////////////////////////////////////////////////////////////////////
+	// on routes that end in /sports/:name
+	// ----------------------------------------------------
+	apiRouter.route('/sports/:name')
+		.get(function(req, res) {
+			this.sportName = req.params.name;
+			this.sport = {
+            	 "name": "Cycling",
+                 "goldMedals": [{
+	                 "division": "Mens Sprint",
+	                 "country": "UK",
+	                  "year": 2012
+                  }, {
+	                  "division": "Women's Sprint",
+	                  "country": "Australia",
+	                  "year": 2012
+                  }]
+                };
+                res.send(this.sport);
+			
+		});
+
+////////////////////////////////////////////////////////////////////////////////
+		
+	
 
 	// api endpoint to get user information
 	apiRouter.get('/me', function(req, res) {

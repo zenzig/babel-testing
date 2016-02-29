@@ -3,7 +3,6 @@ import 'angular-ui-router';
 
 angular.module('olympics',["ui.router"  ])
 
-
 .config(($stateProvider, $urlRouterProvider) => {
     $urlRouterProvider.otherwise('/sports');
     
@@ -42,8 +41,7 @@ angular.module('olympics',["ui.router"  ])
                         }]
                     };
                     resolve({data: sport});
-                })
-                
+                });
             }
         },
         controller: function(sportService){
