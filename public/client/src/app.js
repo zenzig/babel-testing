@@ -21,7 +21,7 @@ angular.module('olympics',["ui.router"  ])
 
 .controller('sportsController', function($http){
 // this.sports = ["weightlifting", "cycling"];
-  $http.get('http://localhost:3000/api/sports').then((response) => {
+  $http.get('http://admin.zenzig.com:3000/api/sports').then((response) => {
     this.sports = response.data;
   });
 });
