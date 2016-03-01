@@ -1,7 +1,7 @@
 import angular from 'angular';
 import 'angular-ui-router';
 
-angular.module('olympics',["ui.router"  ])
+angular.module('olympics',["ui.router"])
 
 .config(($stateProvider, $urlRouterProvider) => {
     $urlRouterProvider.otherwise('/sports');
@@ -26,22 +26,9 @@ angular.module('olympics',["ui.router"  ])
         url: "/:sportName",
         templateUrl: "client/sports/sports-medals.html",
         resolve: {
-            sportService: function($q){
-                return $q((resolve, reject) => {
-                    let sport = {
-                        "name": "Cycling",
-                        "goldMedals": [{
-                            "division": "Womens",
-                            "country": "Australia",
-                            "year": 2012
-                        }, {
-                            "division": "Mens",
-                            "country": "UK",
-                            "year": 2012
-                        }]
-                    };
-                    resolve({data: sport});
-                });
+          sportService: function($http, $stateParams) {
+             // $ in "sports/$" below is ES6, remaing $ are angular varibles
+             return $http.get(`http://admin.zenzig.com:3000/api/sports/${$stateParams.sportName}`);
             }
         },
         controller: function(sportService){

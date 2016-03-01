@@ -250,7 +250,7 @@ module.exports = function(app, express) {
 	                  "year": 2012
                   }]
                 };
-                res.send(this.sport);
+                res.json(this.sport);
 			
 		});
 
